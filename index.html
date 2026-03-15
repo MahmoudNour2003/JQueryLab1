@@ -80,9 +80,9 @@
 
     <div id="gallery" class="section">
          <div class="d-flex justify-content-center align-items-center gap-4">
-                        <img src="/pics/left.png" id="prevBtn" class="arrow-btn" alt="Previous">
-                        <img src="/pics/1.jpg" id="mainImage" alt="Snowman">
-                        <img src="/pics/right.png" id="nextBtn" class="arrow-btn" alt="Next">
+                        <img src="./pics/left.png" id="prevBtn" class="arrow-btn" alt="Previous">
+                        <img src="./pics/1.jpg" id="mainImage" alt="Snowman">
+                        <img src="./pics/right.png" id="nextBtn" class="arrow-btn" alt="Next">
                     </div>
     </div>
 
@@ -167,7 +167,7 @@
                     .stop(true, true)
                     .fadeOut(400, function () {
                         $(this)
-                            .attr("src", "/pics/" + currentImageNumber + ".jpg")
+                            .attr("src", "./pics/" + currentImageNumber + ".jpg")
                             .fadeIn(400);
                     });
             }
