@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="jquery-4.0.0.min.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        ul li {
+            background-color: #3498db;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            user-select: none;
+            font-size: 16px;
+            transition: background-color 0.2s;
+        }
+
+        ul li:hover {
+            background-color: #2980b9;
+        }
+
+        ul li.active {
+            background-color: #1a5276;
+        }
+
+        .section {
+            display: none;
+            margin: 40px auto;
+            padding: 30px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            width: 50%;
+            text-align: center;
+        }
+        #about{
+            border: 3px solid #3498db;
+
+        }
+        .arrow-btn {
+            width: 50px;
+            cursor: pointer;
+        }
+        #mainImage {
+            width: 500px;
+            height: 500px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <ul>
+        <li data-target="about">About</li>
+        <li data-target="gallery">Gallery</li>
+        <li data-target="services">Services</li>
+        <li data-target="complain">Complain</li>
+    </ul>
+
+    <div id="about" class="section">
+        <h1>snow man sleeping right now</h1>
+    </div>
+
+    <div id="gallery" class="section">
+         <div class="d-flex justify-content-center align-items-center gap-4">
+                        <img src="/pics/left.png" id="prevBtn" class="arrow-btn" alt="Previous">
+                        <img src="/pics/1.jpg" id="mainImage" alt="Snowman">
+                        <img src="/pics/right.png" id="nextBtn" class="arrow-btn" alt="Next">
+                    </div>
+    </div>
+
+    <div id="services" class="section">
+        <ul class="list-group">
+            <li class="list-group-item" style="background-color: #353157; color: white;">Item * 1</li>
+            <li class="list-group-item" style="background-color: #353157; color: white;">Item * 2</li>
+            <li class="list-group-item" style="background-color: #353157; color: white;">Item * 3</li>
+        </ul>
+    </div>
+
+    <div id="complain" class="section">
+       <div id="form-container" class="text-start">
+                        <div class="row mb-3 align-items-center">
+                            <label class="col-sm-3 col-form-label fw-bold">Name:</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control form-control-sm" id="nameInput">
+                            </div>
+                        </div>
+                        <div class="row mb-3 align-items-center">
+                            <label class="col-sm-3 col-form-label fw-bold">Email:</label>
+                            <div class="col-sm-9">
+                                <input type="email" class="form-control form-control-sm" id="emailInput">
+                            </div>
+                        </div>
+                        <div class="row mb-3 align-items-center">
+                            <label class="col-sm-3 col-form-label fw-bold">Phone:</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control form-control-sm" id="phoneInput">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label class="col-sm-3 col-form-label fw-bold">Complain:</label>
+                            <div class="col-sm-9">
+                                <textarea class="form-control form-control-sm" id="complainInput" rows="3"></textarea>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <button id="sendBtn" class="btn btn-outline-secondary btn-sm px-4">send</button>
+                        </div>
+                    </div>
+
+                    <div id="preview-container" style="display: none;">
+                        <p>Your complain is: <strong id="p-complain"></strong></p>
+                        <p>Your name is: <strong id="p-name"></strong></p>
+                        <p>Your email is: <strong id="p-email"></strong></p>
+                        <p>Your phone is: <strong id="p-phone"></strong></p>
+                        <button id="editBtn" class="btn btn-outline-secondary btn-sm mt-3 px-4">back to edit</button>
+                    </div>
+
+                </div>
+
+    <script>
+        $(document).ready(function () {
+            $("body > ul > li").click(function () {
+                var target = $(this).data("target");
+
+                if (target === "services") {
+                    $(".section").not("#services").hide();
+                    $("#services").stop(true, true).slideToggle(300);
+                    $("body > ul > li").removeClass("active");
+                    if ($("#services").is(":hidden")) {
+                        $(this).addClass("active");
+                    }
+                    return;
+                }
+
+
+                // Toggle active button style
+                $("body > ul > li").removeClass("active");
+                $(this).addClass("active");
+
+                // Hide all sections, then show the clicked one
+                $(".section").hide();
+                $("#" + target).fadeIn(300);
+            });
+            let currentImageNumber = 1;
+            const totalImages = 8;
+
+            function updateGalleryImage() {
+                $("#mainImage")
+                    .stop(true, true)
+                    .fadeOut(400, function () {
+                        $(this)
+                            .attr("src", "/pics/" + currentImageNumber + ".jpg")
+                            .fadeIn(400);
+                    });
+            }
+
+            $("#nextBtn").click(function () {
+                currentImageNumber = (currentImageNumber % totalImages) + 1;
+                updateGalleryImage();
+            });
+
+            $("#prevBtn").click(function () {
+                currentImageNumber = currentImageNumber - 1;
+                if (currentImageNumber < 1) currentImageNumber = totalImages;
+                updateGalleryImage();
+            });
+             $("#sendBtn").click(function () {
+                $("#p-name").text($("#nameInput").val());
+                $("#p-email").text($("#emailInput").val());
+                $("#p-phone").text($("#phoneInput").val());
+                $("#p-complain").text($("#complainInput").val());
+
+                $("#form-container").hide();
+                $("#preview-container").fadeIn();
+            });
+
+            $("#editBtn").click(function () {
+                $("#preview-container").hide();
+                $("#form-container").fadeIn();
+            });
+
+
+            
+        });
+    </script>
+
+</body>
+</html>
